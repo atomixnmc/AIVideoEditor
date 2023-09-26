@@ -4,6 +4,7 @@ import HeroSection from '../components/landing/HeroSection';
 import HeroSection1 from '../components/landing/HeroSection1';
 import FeaturesCards from '../components/landing/FeaturesCards';
 import Testimonials from '../components/landing/Testimonials';
+import NewsLetterForm from '../components/landing/NewsLetterForm';
 
 export default function LandingPage({ user }) {
   return (
@@ -12,7 +13,7 @@ export default function LandingPage({ user }) {
       <HeroSection1 />
       <FeaturesCards />
       <Testimonials />
-      <Testimonials />
+      <NewsLetterForm />
     </LandingLayout>
   );
 }
