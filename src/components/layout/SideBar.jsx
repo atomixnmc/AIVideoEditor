@@ -10,32 +10,21 @@ import {
   Drawer,
   DrawerContent,
   useDisclosure,
+  LinkBox,
+  LinkOverlay,
 } from '@chakra-ui/react';
-import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-  FiMenu,
-} from 'react-icons/fi';
+import { FiMenu } from 'react-icons/fi';
 import { ReactText } from 'react';
+import { Link as ReactRouterLink } from 'react-router-dom';
 
-const LinkItems = [
-  { name: 'Home', icon: FiHome },
-  { name: 'Trending', icon: FiTrendingUp },
-  { name: 'Explore', icon: FiCompass },
-  { name: 'Favourites', icon: FiStar },
-  { name: 'Settings', icon: FiSettings },
-];
-
-export default function SimpleSidebar() {
+export default function SimpleSidebar({ sideBarLinks = [] }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
       <SidebarContent
         onClose={() => onClose}
         display={{ base: 'none', md: 'block' }}
+        sideBarLinks={sideBarLinks}
       />
       <Drawer
         isOpen={isOpen}
@@ -46,7 +35,7 @@ export default function SimpleSidebar() {
         size="full"
       >
         <DrawerContent>
-          <SidebarContent onClose={onClose} />
+          <SidebarContent onClose={onClose} sideBarLinks={sideBarLinks} />
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
@@ -58,7 +47,7 @@ export default function SimpleSidebar() {
   );
 }
 
-const SidebarContent = ({ onClose, ...rest }) => {
+const SidebarContent = ({ sideBarLinks, onClose, ...rest }) => {
   return (
     <Box
       bg={useColorModeValue('white', 'gray.900')}
@@ -70,15 +59,19 @@ const SidebarContent = ({ onClose, ...rest }) => {
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="1.3em" fontWeight="bold">
+        {/* <Text fontSize="1.3em" fontWeight="bold">
           Project 1
-        </Text>
+        </Text> */}
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
-          {link.name}
-        </NavItem>
+      {(sideBarLinks || []).map((link) => (
+        <LinkBox key={link.name}>
+          <NavItem icon={link.icon}>
+            <LinkOverlay as={ReactRouterLink} to={link.to}>
+              {link.name}
+            </LinkOverlay>
+          </NavItem>
+        </LinkBox>
       ))}
     </Box>
   );
